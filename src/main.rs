@@ -61,9 +61,15 @@ fn main() {
                 let channel = msg.channel.unwrap();
                 let sender = msg.sender.unwrap();
                 let content = msg.content.unwrap();
-                if false && !msg.unread.unwrap_or(false) {
-                    // already seen -- don't spam the user
+
+                if content.typeName.as_ref().unwrap() == "reaction" {
                     continue;
+                }
+
+                if !msg.unread.unwrap_or(false) {
+                    // already seen -- don't spam the user
+                    // NOTE: currently this is _always_ false, and so useless
+                    // continue;
                 }
 
                 if let Some(ref me) = me {
@@ -72,14 +78,46 @@ fn main() {
                     }
                 }
 
-                let mut n = Notification::new();
-                n.appname("keybase")
-                    .summary(channel.name.as_ref().unwrap())
-                    .body(&format!(
-                        "{}: {}",
+                let (dm, title) = if let Some(n) = channel.topicName {
+                    (false, format!("{}#{}", channel.name.as_ref().unwrap(), n))
+                } else if channel.membersType.as_ref().unwrap() == "impteamnative" {
+                    let mut members = channel
+                        .name
+                        .as_ref()
+                        .unwrap()
+                        .split(',')
+                        .collect::<Vec<_>>();
+
+                    if let Some(ref me) = me {
+                        members.retain(|u| u != me);
+                    }
+
+                    if members.len() == 0 {
+                        // self-message should have been caught by sender.username == me
+                        unreachable!()
+                    } else if members.len() == 1 {
+                        (true, members.into_iter().next().unwrap().to_owned())
+                    } else {
+                        (false, members.join(", "))
+                    }
+                } else {
+                    (false, channel.name.clone().unwrap())
+                };
+
+                let body = if dm {
+                    content.text.unwrap().body.unwrap()
+                } else {
+                    format!(
+                        "<i>{}</i>: {}",
                         sender.username.unwrap(),
                         content.text.unwrap().body.unwrap()
-                    ))
+                    )
+                };
+
+                let mut n = Notification::new();
+                n.appname("keybase")
+                    .summary(&title)
+                    .body(&body)
                     .icon(opt.icon.as_ref().map(|s| &**s).unwrap_or("im-message-new"))
                     .hint(Hint::Category("im.received".to_owned()))
                     .hint(Hint::DesktopEntry("keybase".to_owned()))
