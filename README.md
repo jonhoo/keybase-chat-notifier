@@ -1,3 +1,3 @@
 ```console
-$ keybase chat api-listen | cargo run -- --me=<your username>
+$ keybase chat api-listen | cargo run
 ```
