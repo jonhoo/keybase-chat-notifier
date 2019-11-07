@@ -1,10 +1,23 @@
 [package]
 name = "keybase-chat-notifier"
 version = "0.1.0"
+
+description = "Produce system notification from keybase chat events"
+readme = "README.md"
+
 authors = ["Jon Gjengset <jon@thesquareplanet.com>"]
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+homepage = "https://github.com/jonhoo/keybase-chat-notifier"
+repository = "https://github.com/jonhoo/keybase-chat-notifier.git"
+
+keywords = ["keybase","cli","systray","notification"]
+categories = ["command-line-utilities"]
+
+license = "MIT/Apache-2.0"
+
+[badges]
+maintenance = { status = "passively-maintained" }
 
 [dependencies]
 keybase-protocol = "0.1.1"
