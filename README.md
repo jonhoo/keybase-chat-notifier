@@ -18,21 +18,20 @@ just use the command-line `keybase chat` command, but whatever floats
 your boat.
 
 To install the tool, make sure you have a somewhat recent Rust compiler
-[installed](https://www.rust-lang.org/tools/install). Then run:
+[installed](https://www.rust-lang.org/tools/install) and `~/.cargo/bin`
+in your `$PATH`. Then run:
+
+```console
+$ cargo install keybase-chat-notifier
+$ keybase chat api-listen | keybase-chat-notifier
+```
+
+If you want a local checkout instead, run:
 
 ```console
 $ git clone https://github.com/jonhoo/keybase-chat-notifier.git
 $ cd keybase-chat-notifier
 $ keybase chat api-listen | cargo run
-```
-
-To put the binary in your path, just get it from
-`target/debug/keybase-chat-notifier`, or use [`cargo
-install`](https://doc.rust-lang.org/cargo/commands/cargo-install.html):
-
-```console
-$ cargo install --path .
-$ export PATH=$PATH:$HOME/.cargo/bin
 ```
 
 ### Customization
