@@ -66,7 +66,7 @@ fn main() {
                     continue;
                 }
 
-                if let Some(ref me) = opt.me {
+                if let Some(ref me) = me {
                     if sender.username.as_ref().unwrap() == me {
                         continue;
                     }
