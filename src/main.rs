@@ -3,9 +3,12 @@ use notify_rust::{Hint, Notification};
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
-#[structopt(name = "example", about = "An example of StructOpt usage.")]
+#[structopt(
+    name = "keybase-chat-notifier",
+    about = "Produce system notification from keybase chat events"
+)]
 struct Opt {
-    /// Your username (to filter messages you send yourself).
+    /// Your username (to filter messages you send yourself)
     ///
     /// If not set, will attempt to use `keybase status` to find the username.
     #[structopt(long)]
